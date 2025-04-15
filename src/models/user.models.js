@@ -23,6 +23,19 @@ const userSchema = new Schema(
       trim: true, //calls trim function to trim leading and trialing spaces
       minLength: 8, //creates a validator that validates if the password is greator the the specified length
     },
+    resetToken:{
+        type: String,
+        trim: true,
+        default: null
+    },
+    resetTokenExpiration: {
+      type: Date,
+      default: null
+    },
+    refreshToken: {
+      type: String,
+      default: null,
+    }
   },
   { timestamps: true }
 );
