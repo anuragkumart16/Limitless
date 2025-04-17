@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 import { sendResetEmail } from "../utils/resetEmail.js";
 import { getUser } from "../utils/getUser.js";
+import jwt from "jsonwebtoken";
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -122,18 +123,161 @@ const verifyResetToken = asyncHandler(async (req, res) => {
     user.resetToken = null;
     user.resetTokenExpiration = null;
     await user.save();
-    
+
     return res.status(200).json({
-      success: true,
-      message: "Password updated successfully",
+        success: true,
+        message: "Password updated successfully",
     });
 
 })
 
 const loginUser = asyncHandler(async (req, res) => {
     console.log(req.body)
-    res.status(200).json({ message: "Login User" })
+    let { email, username, password } = req.body
+    email = email?.trim();
+    username = username?.trim();
+    password = password?.trim();
+
+    if ([email, username, password].includes("")) {
+        return res.status(400).json({
+            success: false,
+            message: "All fields are required"
+        })
+    }
+
+    // getting user instance
+    let user = await getUser(email, username)
+
+    // checking if user exists
+    if (!user) {
+        return res.status(400).json({
+            success: false,
+            message: `No account found with given ${email ? "email" : "username"}`
+        })
+    }
+
+    // checking if password is correct
+    const isPasswordCorrect = await user.comparePassword(password)
+    if (!isPasswordCorrect) {
+        return res.status(400).json({
+            success: false,
+            message: "Incorrect password"
+        })
+    }
+
+    // generating access token
+    const accessToken = user.generateAccessToken()
+    const refreshToken = user.generateRefreshToken()
+
+    // saving refresh token
+    user.refreshToken = refreshToken
+    try {
+        await user.save()
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong, while logging in, please try again later!"
+        })
+    }
+
+    // sending response 
+    res.status(200)
+        .cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: true, // use false if not using HTTPS locally
+            sameSite: "strict",
+        })
+        .cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        })
+        .json({
+            success: true,
+            message: "Login successful",
+            data: {
+                accessToken,
+                refreshToken,
+            },
+        });
+
 })
 
+const getAccessToken = asyncHandler(async (req, res) => {
+    let refreshToken = req.cookies?.refreshToken || req.body.refreshToken
+    console.log(refreshToken)
+    if (!refreshToken) {
+        return res.status(400).json({
+            success: false,
+            message: "Refresh token is required"
+        })
+    }
+    let decoded
+    try {
+        decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            success: false,
+            message: "Invalid refresh token"
+        })
+    }
+    const user = await User.findById(decoded.id)
+    
+    if (!user) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid refresh token"
+        })
+    }
 
-export { registerUser, sendResetPasswordEmail, verifyResetToken, loginUser };
+    if (user.refreshToken !== refreshToken) {
+        return res.status(403).json({
+          success: false,
+          message: "Refresh token mismatch",
+        });
+      }
+      
+
+    const accessToken = user.generateAccessToken()
+    res.status(200)
+        .cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        })
+        .json({
+            success: true,
+            message: "Access token generated successfully",
+            data: {
+                accessToken,
+            },
+        });
+
+})
+
+const logoutUser = asyncHandler(async (req, res) => {
+    req.user.refreshToken = null;
+    await req.user.save();
+
+    res.clearCookie("accesstoken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+    });
+
+    res.clearCookie("refreshtoken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+    });
+
+    return res.status(200).json({
+        success: true,
+        message: "Logout successful",
+    });
+
+})
+
+export { registerUser, sendResetPasswordEmail, verifyResetToken, loginUser, logoutUser ,getAccessToken };

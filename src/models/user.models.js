@@ -55,15 +55,16 @@ userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     { id: this._id, username: this.username, email: this.email },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: ACCESS_TOKEN_EXPIRY }
+    { expiresIn: '1d' }
   );
 };
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     { id: this._id},
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: REFRESH_TOKEN_EXPIRY }
+    { expiresIn: '7d' }
   );
 };
 
 export const User = mongoose.model("User", userSchema);
+
