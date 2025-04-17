@@ -93,7 +93,7 @@ const sendResetEmail = async (email) => {
     };
 
     try {
-        // await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
         console.log('Email sent successfully!');
         return token
     } catch (error) {
