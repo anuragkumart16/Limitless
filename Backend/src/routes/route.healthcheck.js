@@ -1,3 +1,8 @@
-export function healthCheck(req, res) {
-    res.status(200).send('OK');
-}
+import Router from "express";
+import { healthCheck } from "../controllers/healthcheck.controller.js";
+
+const healthCheckRouter = Router();
+
+healthCheckRouter.route("/").get(healthCheck);
+
+export { healthCheckRouter };
