@@ -1,21 +1,53 @@
 import React, { useEffect } from "react";
 import ScreenDiv from "../Atom/ScreenDiv";
 import healthCheck from "../../helpers/healthCheck.helper.js";
+import handleError from "../../helpers/error.helper.js";
+import { useNavigate } from "react-router-dom";
+import { checkToken } from "../../helpers/auth.helper.js";
 
 function SplashScreen() {
+  const navigate = useNavigate();
+
+  async function onLoad() {
+    try {
+      const data = await healthCheck();
+      return data;
+    } catch (error) {
+      handleError(error, navigate);
+    }
+  }
+
   useEffect(() => {
-    console.log(healthCheck())
-  },[])
+    setTimeout(() => {
+      (async () => {
+        const healthCheckResponse = await onLoad();
+        if (healthCheckResponse.success) {
+          const checkTokenResponse = await checkToken();
+          if (checkTokenResponse.success) {
+            navigate("/dashboard");
+          } else {
+            navigate("/auth");
+          }
+        } else {
+          navigate("/error", {
+            state: {
+              error: "Server Error",
+              message: "Something went wrong. We're working on it!",
+            },
+          });
+        }
+      })();
+    }, 500);
+  }, []);
   return (
     <ScreenDiv>
       <img
         src="Dark-Logo.svg"
         alt="Logo Image"
-        style={{ 
+        style={{
           borderRadius: "50%",
-          border: '1px solid #A1A1AA'
-
-         }}
+          border: "1px solid #A1A1AA",
+        }}
       />
       <p
         style={{

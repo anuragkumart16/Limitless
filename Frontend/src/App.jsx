@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SplashScreen from './Components/Template/SplashScreen'
 import Auth from './Components/Template/Auth'
-import ServerError from './Components/Template/ServerError'
+import Error from './Components/Template/Error'
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SplashScreen />} />
         <Route path='/auth' element={<Auth />} />
-        <Route path='/servererror' element={<ServerError />} />
+        <Route path='/error' element={<Error />} />
       </Routes>
     </Router>
   )

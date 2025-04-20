@@ -1,15 +1,11 @@
 async function healthCheck() {
+    const url = import.meta.env.VITE_BACKEND
     try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/healthcheck/`,{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        const response = await fetch(`${url}/api/v1/healthcheck`)
         const data = await response.json()
         return data
     } catch (error) {
-        console.log(error)
+        throw new Error(error)
     }
 }
 
