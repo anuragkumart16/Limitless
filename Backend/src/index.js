@@ -8,7 +8,7 @@ dotenv.config({
 
 connectDb()
 .then(()=>{
-    app.listen(process.env.PORT || 8000,()=>{
+    app.listen(process.env.PORT || 8000,'0.0.0.0',()=>{
         console.log('Express App Started Successfully and Running!')
         console.log(`Server Started at http://localhost:${process.env.PORT || 8000}`)
     })

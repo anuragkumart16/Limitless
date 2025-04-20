@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import OutlineDiv from '../Atom/OutlineDiv'
 import SecondaryHeading from '../Atom/SecondaryHeading'
 import SmallText from '../Atom/SmallText'
@@ -7,6 +7,8 @@ import Button from '../Atom/Button'
 import SecondaryBtn from '../Atom/SecondaryBtn'
 
 function AuthForm() {
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
   return (
     <form>
         <OutlineDiv padding='3rem'  style={{gap:'1rem',display:'flex',flexDirection:'column',width:'fit-content'}}>
