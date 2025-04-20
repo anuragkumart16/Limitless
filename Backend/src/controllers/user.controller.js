@@ -280,4 +280,11 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 })
 
-export { registerUser, sendResetPasswordEmail, verifyResetToken, loginUser, logoutUser ,getAccessToken };
+const sendOK = asyncHandler(async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        message: "OK"
+    })
+})
+
+export { registerUser, sendResetPasswordEmail, verifyResetToken, loginUser, logoutUser ,getAccessToken ,sendOK};

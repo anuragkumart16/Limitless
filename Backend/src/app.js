@@ -6,7 +6,8 @@ import { dataLimit } from "./constants.js";
 const app = express();
 
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS
+  origin: process.env.ALLOWED_ORIGINS,
+  credentials: true
 }))
 
 app.use(express.json({
