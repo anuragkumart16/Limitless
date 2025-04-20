@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ScreenDiv from "../Atom/ScreenDiv";
 import healthCheck from "../../helpers/healthCheck.helper.js";
-import handleError from "../../helpers/error.helper.js";
+import {handleError} from "../../helpers/error.helper.js";
 import { useNavigate } from "react-router-dom";
 import { checkToken } from "../../helpers/auth.helper.js";
 
@@ -23,6 +23,7 @@ function SplashScreen() {
         const healthCheckResponse = await onLoad();
         if (healthCheckResponse.success) {
           const checkTokenResponse = await checkToken();
+          console.log(checkTokenResponse,'this is a token response')
           if (checkTokenResponse.success) {
             navigate("/dashboard");
           } else {
@@ -68,4 +69,4 @@ function SplashScreen() {
 
 export default SplashScreen;
 
-// boxShadow:'0px 0px 40px 0px'
+

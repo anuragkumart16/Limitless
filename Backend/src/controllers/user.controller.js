@@ -4,37 +4,36 @@ import { sendResetEmail } from "../utils/resetEmail.js";
 import { getUser } from "../utils/getUser.js";
 import jwt from "jsonwebtoken";
 
-
 const registerUser = asyncHandler(async (req, res) => {
-    const { username, email, password } = req.body
-    console.log(req.body)
+    const { username, email, password } = req.body;
+    console.log(req.body);
 
     if ([username, email, password].includes("")) {
         return res.status(400).json({
             success: false,
-            message: "All fields are required"
-        })
+            message: "All fields are required",
+        });
     }
 
     if (email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({
                 success: false,
-                message: "Email is not valid"
-            })
+                message: "Email is not valid",
+            });
         }
     }
 
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
         return res.status(400).json({
             success: false,
-            message: "User already exists, please login or use another email!"
-        })
+            message: "User already exists, please login or use another email!",
+        });
     }
 
-    const user = await User.create({ username, email, password })
+    const user = await User.create({ username, email, password });
     if (user) {
         return res.status(201).json({
             success: true,
@@ -43,80 +42,85 @@ const registerUser = asyncHandler(async (req, res) => {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                createdAt: user.createdAt
-            }
-        })
+                createdAt: user.createdAt,
+            },
+        });
     } else {
         return res.status(500).json({
             success: false,
-            message: "Something went wrong, while creating a user please try again later!"
-        })
+            message:
+                "Something went wrong, while creating a user please try again later!",
+        });
     }
-
 });
 
 const sendResetPasswordEmail = asyncHandler(async (req, res) => {
-    let { email, username } = req.body
+    let { email, username } = req.body;
 
     email = email?.trim();
     username = username?.trim();
 
-
     // getting user instance
-    let user = await getUser(email, username)
+    let user = await getUser(email, username);
 
     // checking if user exists
     if (!user) {
         return res.status(400).json({
             success: false,
-            message: `No account found with given ${email ? "email" : "username"}`
-        })
+            message: `No account found with given ${email ? "email" : "username"}`,
+        });
     }
 
     // sending otp
     try {
-        const resetToken = await sendResetEmail(user.email)
-        console.log(resetToken)
-        const userInstance = await User.findOneAndUpdate({ email: user.email }, {
-            resetToken, resetTokenExpiration: Date.now() + 10 * 60 * 1000
-        }, { new: true })
+        const resetToken = await sendResetEmail(user.email);
+        console.log(resetToken);
+        const userInstance = await User.findOneAndUpdate(
+            { email: user.email },
+            {
+                resetToken,
+                resetTokenExpiration: Date.now() + 10 * 60 * 1000,
+            },
+            { new: true }
+        );
         return res.status(200).json({
             success: true,
-            message: "reset link sent successfully"
-        })
+            message: "reset link sent successfully",
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({
             success: false,
-            message: "Something went wrong, while sending reset link please try again later!"
-        })
+            message:
+                "Something went wrong, while sending reset link please try again later!",
+        });
     }
 });
 
 const verifyResetToken = asyncHandler(async (req, res) => {
-    let { resetToken, password } = req.body
+    let { resetToken, password } = req.body;
     resetToken = resetToken?.trim();
 
     // getting user instance
     if (!resetToken) {
         return res.status(400).json({
             success: false,
-            message: "Invalid reset token"
-        })
+            message: "Invalid reset token",
+        });
     }
-    let user = await User.findOne({ resetToken })
+    let user = await User.findOne({ resetToken });
     if (!user) {
         return res.status(400).json({
             success: false,
-            message: "Invalid reset token"
-        })
+            message: "Invalid reset token",
+        });
     }
 
     if (user.resetTokenExpiration < Date.now()) {
         return res.status(400).json({
             success: false,
-            message: "Reset token has expired"
-        })
+            message: "Reset token has expired",
+        });
     }
     user = await User.findOne({ resetToken });
     user.password = password;
@@ -128,12 +132,11 @@ const verifyResetToken = asyncHandler(async (req, res) => {
         success: true,
         message: "Password updated successfully",
     });
-
-})
+});
 
 const loginUser = asyncHandler(async (req, res) => {
-    console.log(req.body)
-    let { email, username, password } = req.body
+    console.log(req.body);
+    let { email, username, password } = req.body;
     email = email?.trim();
     username = username?.trim();
     password = password?.trim();
@@ -141,57 +144,59 @@ const loginUser = asyncHandler(async (req, res) => {
     if ([email, username, password].includes("")) {
         return res.status(400).json({
             success: false,
-            message: "All fields are required"
-        })
+            message: "All fields are required",
+        });
     }
 
     // getting user instance
-    let user = await getUser(email, username)
+    let user = await getUser(email, username);
 
     // checking if user exists
     if (!user) {
         return res.status(400).json({
             success: false,
-            message: `No account found with given ${email ? "email" : "username"}`
-        })
+            message: `No account found with given ${email ? "email" : "username"}`,
+        });
     }
 
     // checking if password is correct
-    const isPasswordCorrect = await user.comparePassword(password)
+    const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
         return res.status(400).json({
             success: false,
-            message: "Incorrect password"
-        })
+            message: "Incorrect password",
+        });
     }
 
     // generating access token
-    const accessToken = user.generateAccessToken()
-    const refreshToken = user.generateRefreshToken()
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
 
     // saving refresh token
-    user.refreshToken = refreshToken
+    user.refreshToken = refreshToken;
     try {
-        await user.save()
+        await user.save();
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({
             success: false,
-            message: "Something went wrong, while logging in, please try again later!"
-        })
+            message:
+                "Something went wrong, while logging in, please try again later!",
+        });
     }
 
-    // sending response 
-    res.status(200)
+    // sending response
+    res
+        .status(200)
         .cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: true, // use false if not using HTTPS locally
-            sameSite: "strict",
+            secure: process.env.COOKIE_SECURE,
+            sameSite: process.env.COOKIE_SAME_SITE,
         })
         .cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: process.env.COOKIE_SECURE,
+            sameSite: process.env.COOKIE_SAME_SITE,
         })
         .json({
             success: true,
@@ -201,51 +206,50 @@ const loginUser = asyncHandler(async (req, res) => {
                 refreshToken,
             },
         });
-
-})
+});
 
 const getAccessToken = asyncHandler(async (req, res) => {
-    let refreshToken = req.cookies?.refreshToken || req.body.refreshToken
-    console.log(refreshToken)
+    let refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
+    console.log(refreshToken);
     if (!refreshToken) {
         return res.status(400).json({
             success: false,
-            message: "Refresh token is required"
-        })
+            message: "Refresh token is required",
+        });
     }
-    let decoded
+    let decoded;
     try {
-        decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: "Invalid refresh token"
-        })
+            message: "Invalid refresh token",
+        });
     }
-    const user = await User.findById(decoded.id)
-    
+    const user = await User.findById(decoded.id);
+
     if (!user) {
         return res.status(400).json({
             success: false,
-            message: "Invalid refresh token"
-        })
+            message: "Invalid refresh token",
+        });
     }
 
     if (user.refreshToken !== refreshToken) {
         return res.status(403).json({
-          success: false,
-          message: "Refresh token mismatch",
+            success: false,
+            message: "Refresh token mismatch",
         });
-      }
-      
+    }
 
-    const accessToken = user.generateAccessToken()
-    res.status(200)
+    const accessToken = user.generateAccessToken();
+    res
+        .status(200)
         .cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: process.env.COOKIE_SECURE,
+            sameSite: process.env.COOKIE_SAME_SITE,
         })
         .json({
             success: true,
@@ -254,8 +258,7 @@ const getAccessToken = asyncHandler(async (req, res) => {
                 accessToken,
             },
         });
-
-})
+});
 
 const logoutUser = asyncHandler(async (req, res) => {
     req.user.refreshToken = null;
@@ -263,28 +266,35 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     res.clearCookie("accesstoken", {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
+        secure: process.env.COOKIE_SECURE,
+        sameSite: process.env.COOKIE_SAME_SITE,
     });
 
     res.clearCookie("refreshtoken", {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
+        secure: process.env.COOKIE_SECURE,
+        sameSite: process.env.COOKIE_SAME_SITE,
     });
 
     return res.status(200).json({
         success: true,
         message: "Logout successful",
     });
-
-})
+});
 
 const sendOK = asyncHandler(async (req, res) => {
     return res.status(200).json({
         success: true,
-        message: "OK"
-    })
-})
+        message: "Access token verified successfully!",
+    });
+});
 
-export { registerUser, sendResetPasswordEmail, verifyResetToken, loginUser, logoutUser ,getAccessToken ,sendOK};
+export {
+    registerUser,
+    sendResetPasswordEmail,
+    verifyResetToken,
+    loginUser,
+    logoutUser,
+    getAccessToken,
+    sendOK,
+};

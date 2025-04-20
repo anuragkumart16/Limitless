@@ -4,7 +4,7 @@ import { User } from "../models/user.models.js";
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
     try {
-        const token = req.cookies?.accesstoken || req.header("Authorization")?.replace("Bearer ", "");
+        const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
             return res.status(401).json({

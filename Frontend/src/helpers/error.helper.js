@@ -11,4 +11,14 @@ function handleError(error,navigate){
       }
 }
 
-export default handleError
+function handleResponseError(response,setter){
+    if (!response.success){
+        setter(`${response.message}!`)
+        return
+    }else{
+        setter(null)
+        return
+    }
+}
+
+export  { handleError , handleResponseError }
