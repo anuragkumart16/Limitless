@@ -17,6 +17,7 @@ function SplashScreen() {
     }
   }
 
+  
   useEffect(() => {
     setTimeout(() => {
       (async () => {
