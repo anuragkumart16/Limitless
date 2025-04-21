@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SplashScreen from './Components/Template/SplashScreen'
 import Auth from './Components/Template/Auth'
 import Error from './Components/Template/Error'
+import PageNotFound from './Pages/PageNotFound'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<SplashScreen />} />
         <Route path='/auth' element={<Auth />} />
         <Route path='/error' element={<Error />} />
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
     </Router>
   )

@@ -4,15 +4,15 @@ import SecondaryHeading from '../Atom/SecondaryHeading'
 import SmallText from '../Atom/SmallText'
 import Input from '../Atom/Input'
 import Button from '../Atom/Button'
-import { validateEmail, validateUsername, validatePassword , isEmail } from '../../helpers/validate.helper'
-import { loginUserViaEmail , loginUserViaUsername } from '../../helpers/auth.helper'
-import { handleError , handleResponseError} from '../../helpers/error.helper'
+import { validateEmail, validateUsername, validatePassword , isEmail } from '../../Helpers/validate.helper'
+import { loginUserViaEmail , loginUserViaUsername } from '../../Helpers/auth.helper'
+import { handleError , handleResponseError} from '../../Helpers/error.helper'
 import { useNavigate } from 'react-router-dom'
-import { handleSuccessResponse } from '../../helpers/successfulResponse.helper'
+import { handleSuccessResponse } from '../../Helpers/successfulResponse.helper'
 
 
 
-function AuthForm() {
+function LoginForm() {
 
     const navigate = useNavigate()
 
@@ -39,6 +39,7 @@ function AuthForm() {
                 .then(data => {
                     handleResponseError(data,setErrorMessage)
                     handleSuccessResponse(data,setSuccessMessage)
+                    navigate('/dashboard')
                 })
                 .catch(error => handleError(error,navigate))
             }
@@ -55,6 +56,7 @@ function AuthForm() {
                 .then(data => {
                     handleResponseError(data,setErrorMessage)
                     handleSuccessResponse(data,setSuccessMessage)
+                    navigate('/dashboard')
                 })
                 .catch(error => handleError(error,navigate))
             }
@@ -99,4 +101,4 @@ function AuthForm() {
     )
 }
 
-export default AuthForm
+export default LoginForm

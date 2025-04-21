@@ -210,7 +210,6 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const getAccessToken = asyncHandler(async (req, res) => {
     let refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
-    console.log(refreshToken);
     if (!refreshToken) {
         return res.status(400).json({
             success: false,

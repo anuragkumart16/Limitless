@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import ScreenDiv from "../Atom/ScreenDiv";
-import healthCheck from "../../helpers/healthCheck.helper.js";
-import {handleError} from "../../helpers/error.helper.js";
+import ScreenDiv from "../Atom/ScreenDiv.jsx";
+import healthCheck from "../../Helpers/healthCheck.helper.js";
+import { handleError } from "../../Helpers/error.helper.js";
 import { useNavigate } from "react-router-dom";
-import { checkToken } from "../../helpers/auth.helper.js";
+import { checkToken , getAccessToken } from "../../Helpers/auth.helper.js";
 
 function SplashScreen() {
   const navigate = useNavigate();
@@ -23,11 +23,24 @@ function SplashScreen() {
         const healthCheckResponse = await onLoad();
         if (healthCheckResponse.success) {
           const checkTokenResponse = await checkToken();
-          console.log(checkTokenResponse,'this is a token response')
+          console.log(checkTokenResponse) //this is a log for checking if access token was checked 
           if (checkTokenResponse.success) {
             navigate("/dashboard");
           } else {
-            navigate("/auth");
+            getAccessToken() 
+            .then((data) => {
+              console.log(data) //getAccessToken is fired
+              if (data.success) {
+                localStorage.setItem("accessToken", data.data.accessToken);
+                navigate("/dashboard");
+              }
+              else{
+                navigate("/auth");
+              }
+            })
+            .catch((error) => {
+              handleError(error, navigate);
+            });
           }
         } else {
           navigate("/error", {
@@ -38,7 +51,7 @@ function SplashScreen() {
           });
         }
       })();
-    }, 500);
+    }, 1000);
   }, []);
   return (
     <ScreenDiv>

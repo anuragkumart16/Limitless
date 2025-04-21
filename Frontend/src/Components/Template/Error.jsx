@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import ScreenDiv from '../Atom/ScreenDiv'
 import OutlineDiv from '../Atom/OutlineDiv'
 import { useLocation,useNavigate } from 'react-router-dom'
-import {handleError} from '../../helpers/error.helper'
-import healthCheck from '../../helpers/healthCheck.helper'
-import { checkToken } from '../../helpers/auth.helper'
+import {handleError} from '../../Helpers/error.helper'
+import healthCheck from '../../Helpers/healthCheck.helper'
+import { checkToken } from '../../Helpers/auth.helper'
 
 function Error() {
 
