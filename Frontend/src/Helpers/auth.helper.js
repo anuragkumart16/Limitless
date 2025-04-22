@@ -13,6 +13,7 @@ async function checkToken() {
         const data = await response.json()
         return data 
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
 }
@@ -31,6 +32,7 @@ async function getAccessToken() {
         const data = await response.json()
         return data
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
 }
@@ -48,6 +50,7 @@ async function loginUserViaEmail(email, password) {
         const data = await response.json()
         return data
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
 }
@@ -65,6 +68,7 @@ async function loginUserViaUsername(username, password) {
         const data = await response.json()
         return data
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
 }
