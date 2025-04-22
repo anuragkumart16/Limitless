@@ -1,6 +1,6 @@
 import React from "react";
 
-function Button({ children, type = "button",style }) {
+function Button({ children, type = "button",style ,onclick}) {
   const defaultStyle = {
     padding: "0.5rem 1rem",
     backgroundColor: "#ffffff",
@@ -12,7 +12,7 @@ function Button({ children, type = "button",style }) {
     width: "100%",
     cursor: "pointer",
   };
-  return <button type={type} style={{ ...defaultStyle, ...style }}>{children}</button>;
+  return <button type={type} style={{ ...defaultStyle, ...style }} onClick={onclick} >{children}</button>;
 }
 
 export default Button;

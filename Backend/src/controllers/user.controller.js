@@ -57,12 +57,13 @@ const registerUser = asyncHandler(async (req, res) => {
 const sendResetPasswordEmail = asyncHandler(async (req, res) => {
     let { email, username } = req.body;
 
+
     email = email?.trim();
     username = username?.trim();
 
     // getting user instance
     let user = await getUser(email, username);
-
+    console.log(user)
     // checking if user exists
     if (!user) {
         return res.status(400).json({
@@ -85,7 +86,7 @@ const sendResetPasswordEmail = asyncHandler(async (req, res) => {
         );
         return res.status(200).json({
             success: true,
-            message: "reset link sent successfully",
+            message: "Reset link sent successfully to registered email",
         });
     } catch (error) {
         console.log(error);

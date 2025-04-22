@@ -11,4 +11,14 @@ function handleSuccessResponse(data,setter) {
     }
 }
 
-export { handleSuccessResponse }
+function handleSuccess(data,setter) {
+    if (data.success){
+        setter(`${data.message}!`)
+        return
+    }else{
+        setter(null)
+        return
+    }
+}
+
+export { handleSuccessResponse ,handleSuccess}

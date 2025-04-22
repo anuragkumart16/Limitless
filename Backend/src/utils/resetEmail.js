@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 const sendResetEmail = async (email) => {
     const token = crypto.randomBytes(32).toString('hex');
-    let resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`
+    let resetLink = `${process.env.ALLOWED_ORIGINS}/reset-password/${token}`
     const mailOptions = {
         from: 'acrssdevice01@gmail.com', // Sender address
         to: email, // Receiver address

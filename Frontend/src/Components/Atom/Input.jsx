@@ -1,6 +1,6 @@
 import React from "react";
 
-function Input({ type = "text", name = "", placeholder = "", style }) {
+function Input({ type = "text", name = "", placeholder = "", style , reference ,value, onchange}) {
   const defaultStyle = {
     border: "none",
     boxShadow: "0px 0px 1px 1px #424242",
@@ -12,9 +12,12 @@ function Input({ type = "text", name = "", placeholder = "", style }) {
   };
   return (
     <input
+      value={value}
+      onChange={onchange}
       type={type}
       name={name}
       placeholder={placeholder}
+      ref={reference}
       style={{ ...defaultStyle, ...style }}
       onFocus={(e) => {
         e.target.style.border = "1px solid #ffffff"
