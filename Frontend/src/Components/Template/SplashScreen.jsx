@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import ScreenDiv from "../Atom/ScreenDiv.jsx";
 import healthCheck from "../../Helpers/healthCheck.helper.js";
+import SmallText from "../Atom/SmallText.jsx";
+import Span from "../Atom/Span.jsx";
 import { handleError } from "../../Helpers/error.helper.js";
 import { useNavigate } from "react-router-dom";
 import { checkToken , getAccessToken } from "../../Helpers/auth.helper.js";
@@ -64,6 +66,7 @@ function SplashScreen() {
           border: "1px solid #A1A1AA",
         }}
       />
+      <SmallText>Become Productive With <Span>Limitless</Span></SmallText>
       <p
         style={{
           color: "rgb(75, 75, 85)",
@@ -73,9 +76,7 @@ function SplashScreen() {
           textAlign: "center",
         }}
       >
-        Your Personal Manager To Make
-        <br /> You{" "}
-        <span style={{ color: "rgb(202, 202, 202)" }}> Limitless</span>
+        <span style={{ color: "rgb(202, 202, 202)" }}> Loding...</span>
       </p>
     </ScreenDiv>
   );

@@ -4,7 +4,7 @@ import OutlineDiv from '../Atom/OutlineDiv'
 import { useLocation,useNavigate } from 'react-router-dom'
 import {handleError} from '../../Helpers/error.helper.js'
 import healthCheck from '../../Helpers/healthCheck.helper.js'
-import { checkToken } from '../../Helpers/auth.helper.js'
+import { checkToken, getAccessToken } from '../../Helpers/auth.helper.js'
 
 function Error() {
 
@@ -16,7 +16,18 @@ function Error() {
         if (response.success) {
           navigate('/dashboard')
         }else{
-          navigate('/auth')
+          getAccessToken()
+          .then(response => {
+            if (response.success) {
+              localStorage.setItem('accessToken', response.data.accessToken)
+              navigate('/dashboard')
+            } else {
+              navigate('/auth')
+            }
+          }
+          ).catch((error) => {
+            handleError(error,navigate)
+          })
         }
       })
     }).catch((error) => {
