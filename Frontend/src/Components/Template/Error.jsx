@@ -13,11 +13,13 @@ function Error() {
   useEffect(() => {
     healthCheck().then(() => {
       checkToken().then((response) => {
+        console.log(response) //this shows that the get token is working
         if (response.success) {
           navigate('/dashboard')
         }else{
-          getAccessToken()
+          getAccessToken() 
           .then(response => {
+            console.log(response) //this shows that the get token is working
             if (response.success) {
               localStorage.setItem('accessToken', response.data.accessToken)
               navigate('/dashboard')
@@ -33,7 +35,7 @@ function Error() {
     }).catch((error) => {
       handleError(error,navigate)
     })
-  },[])
+  },[navigate])
 
   const location = useLocation()
   const error = location.state?.error ;

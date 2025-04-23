@@ -94,7 +94,6 @@ const sendResetEmail = async (email) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully!');
         return token
     } catch (error) {
         console.error('Error sending email:', error);

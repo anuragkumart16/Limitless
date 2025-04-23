@@ -1,7 +1,7 @@
 import sendEmail from "./email.helper"
 
 function handleError(error,navigate){
-    console.log(error)
+    // console.log(error)
     const isOnline = () => navigator.onLine
       if (!isOnline()) {
         navigate('/error',{state:{error:'Network Error',message:'Please check your internet connection'}})
@@ -12,6 +12,7 @@ function handleError(error,navigate){
 }
 
 function handleResponseError(response,setter){
+  // console.log(response,'this is data from error response')
     if (!response.success){
         setter(`${response.message}!`)
         return

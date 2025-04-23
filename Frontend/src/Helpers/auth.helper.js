@@ -127,6 +127,25 @@ async function resetPassword(resetToken,password) {
   }
 }
 
+async function createUser(email, username, password) {
+  try {
+    const response = await fetch(`${url}/api/v1/user/register`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, username, password }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
+
+}
+
 export {
   checkToken,
   loginUserViaEmail,
@@ -134,5 +153,6 @@ export {
   getAccessToken,
   resetPasswordViaEmail,
   resetPasswordViaUsername,
-  resetPassword
+  resetPassword,
+  createUser
 };

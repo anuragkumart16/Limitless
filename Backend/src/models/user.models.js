@@ -21,6 +21,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true, //calls trim function to trim leading and trialing spaces
+      minLength: 1
     },
     resetToken:{
         type: String,

@@ -9,7 +9,8 @@ function SecondaryBtn({children,style}) {
         borderRadius: '6px',
         color: '#A1A1AA',
         fontSize: '1rem',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        width:'100%'
     }
   return (
     <button style={{...defaultStyle,...style}}>{children}</button>

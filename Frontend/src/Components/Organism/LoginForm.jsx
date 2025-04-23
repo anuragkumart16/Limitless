@@ -12,7 +12,7 @@ import { handleSuccessResponse } from '../../Helpers/successfulResponse.helper.j
 
 
 
-function LoginForm() {
+function LoginForm({ togglePages }) {
 
     const navigate = useNavigate()
 
@@ -39,7 +39,9 @@ function LoginForm() {
                 .then(data => {
                     handleResponseError(data,setErrorMessage)
                     handleSuccessResponse(data,setSuccessMessage)
-                    navigate('/dashboard')
+                    if (data.success){
+                        navigate('/dashboard')
+                    }
                 })
                 .catch(error => handleError(error,navigate))
             }
@@ -56,7 +58,9 @@ function LoginForm() {
                 .then(data => {
                     handleResponseError(data,setErrorMessage)
                     handleSuccessResponse(data,setSuccessMessage)
-                    navigate('/dashboard')
+                    if (data.success){
+                        navigate('/dashboard')
+                    }
                 })
                 .catch(error => handleError(error,navigate))
             }
@@ -86,7 +90,7 @@ function LoginForm() {
                 <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <SmallText color='#ffffff'>Password</SmallText>
-                        <SmallText color='#ffffff' style={{ cursor: 'pointer' }}>Forgot Password?</SmallText>
+                        <SmallText color='#ffffff' style={{ cursor: 'pointer' }} onclick={()=>togglePages(false,true,false)}>Forgot Password?</SmallText>
                     </div>
                     <Input type='password' name='password' placeholder='Password' style={{ width: '100%', fontSize: '1rem' }} />
                 </div>
@@ -94,7 +98,7 @@ function LoginForm() {
                     <Button type='submit'>Login</Button>
                 </div>
 
-                    <SmallText color='#ffffff' style={{ textAlign: 'center' }}>Don't Have an account? <span style={{ color: '#ffffff', textDecoration: 'underline', cursor: 'pointer' }}>Signup</span></SmallText>
+                    <SmallText color='#ffffff' style={{ textAlign: 'center' }}>Don't Have an account? <span onClick={()=>togglePages(false,false,true)} style={{ color: '#ffffff', textDecoration: 'underline', cursor: 'pointer' }}>Signup</span></SmallText>
 
             </OutlineDiv>
         </form>

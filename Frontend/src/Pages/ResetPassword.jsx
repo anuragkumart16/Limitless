@@ -56,8 +56,10 @@ function ResetPassword() {
             setError(null)
         }
         else {
-            setError('Password should not be empty!')
-            return
+            if (password !== null){
+                setError('Password should not be empty!')
+                return
+            }
         }
         if (password === confirmPassword) {
             setError(null)

@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
-    console.log(req.body);
 
     if ([username, email, password].includes("")) {
         return res.status(400).json({
@@ -63,7 +62,6 @@ const sendResetPasswordEmail = asyncHandler(async (req, res) => {
 
     // getting user instance
     let user = await getUser(email, username);
-    console.log(user)
     // checking if user exists
     if (!user) {
         return res.status(400).json({
@@ -75,7 +73,6 @@ const sendResetPasswordEmail = asyncHandler(async (req, res) => {
     // sending otp
     try {
         const resetToken = await sendResetEmail(user.email);
-        console.log(resetToken);
         const userInstance = await User.findOneAndUpdate(
             { email: user.email },
             {
@@ -136,7 +133,6 @@ const verifyResetToken = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-    console.log(req.body);
     let { email, username, password } = req.body;
     email = email?.trim();
     username = username?.trim();
