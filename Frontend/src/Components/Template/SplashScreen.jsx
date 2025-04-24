@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import ScreenDiv from "../Atom/ScreenDiv.jsx";
 import healthCheck from "../../Helpers/healthCheck.helper.js";
 import SmallText from "../Atom/SmallText.jsx";
@@ -6,8 +6,10 @@ import Span from "../Atom/Span.jsx";
 import { handleError } from "../../Helpers/error.helper.js";
 import { useNavigate } from "react-router-dom";
 import { checkToken , getAccessToken } from "../../Helpers/auth.helper.js";
+import { UserAuthContext } from "../../Contexts/UserAuthContext.jsx";
 
 function SplashScreen() {
+  const {setIsLogin,setUserData} = useContext(UserAuthContext)
   const navigate = useNavigate();
 
   async function onLoad() {
@@ -28,6 +30,8 @@ function SplashScreen() {
           const checkTokenResponse = await checkToken();
           console.log(checkTokenResponse) //this is a log for checking if access token was checked 
           if (checkTokenResponse.success) {
+            setIsLogin(true)
+            setUserData(checkTokenResponse.data)
             navigate("/dashboard");
           } else {
             getAccessToken() 
@@ -35,6 +39,8 @@ function SplashScreen() {
               console.log(data) //getAccessToken is fired
               if (data.success) {
                 localStorage.setItem("accessToken", data.data.accessToken);
+                setUserData(data.data)
+                setIsLogin(true)
                 navigate("/dashboard");
               }
               else{

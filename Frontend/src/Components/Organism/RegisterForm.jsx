@@ -13,6 +13,7 @@ import { handleResponseError } from '../../Helpers/error.helper.js'
 
 function RegisterForm({ togglePages }) {
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -62,21 +63,24 @@ function RegisterForm({ togglePages }) {
         }
         <div>
           <SmallText color={'#ffffff'}>Enter your email</SmallText>
-          <Input type='email' name='email' placeholder='Email' style={{ width: '16rem' }} />
+          <Input type='email' name='email' placeholder='Email' style={{ width: '16rem' , fontSize:'1rem' }} />
         </div>
         <div>
           <SmallText color={'#ffffff'}>Enter your username</SmallText>
-          <Input type='text' name='username' placeholder='Username' style={{ width: '16rem' }} />
+          <Input type='text' name='username' placeholder='Username' style={{ width: '16rem', fontSize:'1rem'  }} />
         </div>
         <div>
-          <SmallText color={'#ffffff'}>Enter your password</SmallText>
-          <Input type='password' name='password' placeholder='Password' style={{ width: '16rem' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <SmallText color='#ffffff'>Enter password</SmallText>
+                        <SmallText color='#ffffff' style={{ cursor: 'pointer' }} onclick={()=>setShowPassword(!showPassword)}>{showPassword?'Hide':'Show'} Password</SmallText>
+                    </div>
+          <Input type={showPassword ? 'text' : 'password'} name='password' placeholder='Password' style={{ width: '16rem' , fontSize:'1rem' }} />
         </div>
         <div>
           <Button type='submit'>Register</Button>
         </div>
         <div>
-          <SmallText color={'#ffffff'}>Already have an account? <Span onclick={() => togglePages(true, false, false)} style={{ color: '#ffffff', textDecoration: 'underline', cursor: 'pointer' }}>Login</Span></SmallText>
+          <SmallText color={'#ffffff'}>Already have an account? <Span onclick={() => navigate('/auth/login')} style={{ color: '#ffffff', textDecoration: 'underline', cursor: 'pointer' }}>Login</Span></SmallText>
         </div>
       </OutlineDiv>
     </form>

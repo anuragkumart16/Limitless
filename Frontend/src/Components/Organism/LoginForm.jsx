@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import OutlineDiv from '../Atom/OutlineDiv'
 import SecondaryHeading from '../Atom/SecondaryHeading'
 import SmallText from '../Atom/SmallText'
@@ -9,13 +9,17 @@ import { loginUserViaEmail , loginUserViaUsername } from '../../Helpers/auth.hel
 import { handleError , handleResponseError} from '../../Helpers/error.helper.js'
 import { useNavigate } from 'react-router-dom'
 import { handleSuccessResponse } from '../../Helpers/successfulResponse.helper.js'
+import { UserAuthContext } from '../../Contexts/UserAuthContext.jsx'
+
 
 
 
 function LoginForm({ togglePages }) {
 
-    const navigate = useNavigate()
+    const {setIsLogin,setUserData,isLogin,userData} = useContext(UserAuthContext)
 
+    const navigate = useNavigate()
+    const [showPassword, setShowPassword] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
     const [successMessage, setSuccessMessage] = useState(null)
     function handleSubmit(e) {
@@ -40,7 +44,12 @@ function LoginForm({ togglePages }) {
                     handleResponseError(data,setErrorMessage)
                     handleSuccessResponse(data,setSuccessMessage)
                     if (data.success){
+                        setIsLogin(true),
+                        setUserData(data.data)
                         navigate('/dashboard')
+                        setTimeout(()=>{
+                            console.log(isLogin,userData,'this is context apis dta')
+                        },5000)
                     }
                 })
                 .catch(error => handleError(error,navigate))
@@ -90,15 +99,16 @@ function LoginForm({ togglePages }) {
                 <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <SmallText color='#ffffff'>Password</SmallText>
-                        <SmallText color='#ffffff' style={{ cursor: 'pointer' }} onclick={()=>togglePages(false,true,false)}>Forgot Password?</SmallText>
+                        <SmallText color='#ffffff' style={{ cursor: 'pointer' }} onclick={()=>setShowPassword(!showPassword)}>{showPassword?'Hide':'Show'} Password</SmallText>
                     </div>
-                    <Input type='password' name='password' placeholder='Password' style={{ width: '100%', fontSize: '1rem' }} />
+                    <Input type={showPassword ? 'text' : 'password'} name='password' placeholder='Password' style={{ width: '100%', fontSize: '1rem' }} />
+                    <SmallText color='#ffffff' style={{ cursor: 'pointer' }} onclick={()=>togglePages(false,true,false)}>Forgot Password?</SmallText>
                 </div>
                 <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                     <Button type='submit'>Login</Button>
                 </div>
 
-                    <SmallText color='#ffffff' style={{ textAlign: 'center' }}>Don't Have an account? <span onClick={()=>togglePages(false,false,true)} style={{ color: '#ffffff', textDecoration: 'underline', cursor: 'pointer' }}>Signup</span></SmallText>
+                    <SmallText color='#ffffff' style={{ textAlign: 'center' }}>Don't Have an account? <span onClick={()=>navigate('/auth/register')} style={{ color: '#ffffff', textDecoration: 'underline', cursor: 'pointer' }}>Signup</span></SmallText>
 
             </OutlineDiv>
         </form>

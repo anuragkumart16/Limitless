@@ -201,6 +201,9 @@ const loginUser = asyncHandler(async (req, res) => {
             data: {
                 accessToken,
                 refreshToken,
+                _id : user.id,
+                email : user.email,
+                username : user.username,
             },
         });
 });
@@ -239,6 +242,7 @@ const getAccessToken = asyncHandler(async (req, res) => {
         });
     }
 
+
     const accessToken = user.generateAccessToken();
     res
         .status(200)
@@ -252,6 +256,9 @@ const getAccessToken = asyncHandler(async (req, res) => {
             message: "Access token generated successfully",
             data: {
                 accessToken,
+                _id : user.id,
+                email : user.email,
+                username : user.username,
             },
         });
 });
@@ -282,6 +289,7 @@ const sendOK = asyncHandler(async (req, res) => {
     return res.status(200).json({
         success: true,
         message: "Access token verified successfully!",
+        data: req.user
     });
 });
 
