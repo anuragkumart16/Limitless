@@ -12,9 +12,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Splash />} />
       <Route path='/auth' element={<Authenticate />} />
-      <Route path='/auth/forgot-password' element={<Authenticate key='forgot-password' />} />
-      <Route path='/auth/register' element={<Authenticate key='register' />} />
-      <Route path='/auth/login' element={<Authenticate key='login' />} />
+      <Route path='/auth/forgot-password' element={<Authenticate  />} />
+      <Route path='/auth/register' element={<Authenticate  />} />
+      <Route path='/auth/login' element={<Authenticate  />} />
       <Route path='/error' element={<Error />} />
       <Route path='/dashboard' element={<DashBoard />} />
       <Route path='/reset-password/:token' element={<ResetPassword />} />

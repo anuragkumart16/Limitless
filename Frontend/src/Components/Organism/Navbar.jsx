@@ -3,12 +3,13 @@ import SmallText from "../Atom/SmallText";
 import { UserAuthContext } from "../../Contexts/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import UserPopOver from "../Molecules/UserPopOver";
+import { logoutUser } from "../../Helpers/auth.helper.js";
 
 function Navbar({ style }) {
   const popoverref = useRef(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
-  const { isLogin, userData } = useContext(UserAuthContext);
+  const { isLogin, userData , setIsLogin , setUserData } = useContext(UserAuthContext);
   console.log(isLogin)
   const defaultStyle = {
     padding: "0rem 1rem",
@@ -19,7 +20,20 @@ function Navbar({ style }) {
     alignItems: "center",
   };
 
-  function LogOut() {}
+  function LogOut() {
+    logoutUser()
+      .then(() => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        setIsLogin(false);
+        setUserData(null);
+        navigate("/auth");
+      })
+      .catch((error) => {
+        console.log(error)
+        navigate("/error", { state: { error: "Couldn't log out", message: "Something went wrong. We're working on it!" } });
+      });
+  }
 
   const options = useMemo(() => {
     const opts = {};

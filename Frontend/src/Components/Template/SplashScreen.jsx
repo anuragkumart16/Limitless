@@ -82,7 +82,8 @@ function SplashScreen() {
           textAlign: "center",
         }}
       >
-        <span style={{ color: "rgb(202, 202, 202)" }}> Loding...</span>
+        <span style={{ color: "rgb(202, 202, 202)" }}> Loding... </span>
+        <br/> Sometimes it takes longer to start server!
       </p>
     </ScreenDiv>
   );

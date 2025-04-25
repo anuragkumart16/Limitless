@@ -146,6 +146,23 @@ async function createUser(email, username, password) {
 
 }
 
+async function logoutUser() {
+  try {
+    const response = await fetch(`${url}/api/v1/user/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
+}
+
 export {
   checkToken,
   loginUserViaEmail,
@@ -154,5 +171,6 @@ export {
   resetPasswordViaEmail,
   resetPasswordViaUsername,
   resetPassword,
-  createUser
+  createUser,
+  logoutUser
 };

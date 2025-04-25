@@ -2,6 +2,7 @@ import React from 'react'
 import ScreenDiv from '../Components/Atom/ScreenDiv'
 import OutlineDiv from '../Components/Atom/OutlineDiv'
 import Button from '../Components/Atom/Button'
+import Navbar from '../Components/Organism/Navbar'
 import { useNavigate } from 'react-router-dom'
 
 function PageNotFound() {
@@ -9,6 +10,8 @@ function PageNotFound() {
   const error = 'Page Not Found'
   const message = 'The page you are looking for does not exist.'
   return (
+    <>
+    <Navbar/>
     <ScreenDiv>
       <OutlineDiv>
         <h1 style={{ textAlign: 'center',color:'#FAFAFA' }}>{error}</h1>
@@ -16,6 +19,7 @@ function PageNotFound() {
         <Button onclick={()=>navigate('/error')}>Go To Dashboard</Button>
       </OutlineDiv>
     </ScreenDiv>
+    </>
   )
 }
 
