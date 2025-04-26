@@ -44,7 +44,7 @@ function Navbar({ style }) {
       };
     } else {
       opts["Login"] = () => {
-        navigate("/auth/isLogin");
+        navigate("/auth/login");
         setShowUserMenu(false);
       };
       opts["Register"] = () => {

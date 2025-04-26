@@ -189,11 +189,15 @@ const loginUser = asyncHandler(async (req, res) => {
             httpOnly: true,
             secure: process.env.COOKIE_SECURE,
             sameSite: process.env.COOKIE_SAME_SITE,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/"
         })
         .cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: process.env.COOKIE_SECURE,
             sameSite: process.env.COOKIE_SAME_SITE,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/"
         })
         .json({
             success: true,
@@ -250,6 +254,8 @@ const getAccessToken = asyncHandler(async (req, res) => {
             httpOnly: true,
             secure: process.env.COOKIE_SECURE,
             sameSite: process.env.COOKIE_SAME_SITE,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/"
         })
         .json({
             success: true,
@@ -267,16 +273,18 @@ const logoutUser = asyncHandler(async (req, res) => {
     req.user.refreshToken = null;
     await req.user.save();
 
-    res.clearCookie("accesstoken", {
-        httpOnly: true,
+    res.clearCookie("accessToken", {
+        path: "/",
         secure: process.env.COOKIE_SECURE,
         sameSite: process.env.COOKIE_SAME_SITE,
+        httpOnly: true
     });
 
-    res.clearCookie("refreshtoken", {
-        httpOnly: true,
+    res.clearCookie("refreshToken", {
         secure: process.env.COOKIE_SECURE,
         sameSite: process.env.COOKIE_SAME_SITE,
+        path: "/",
+        httpOnly: true
     });
 
     return res.status(200).json({
