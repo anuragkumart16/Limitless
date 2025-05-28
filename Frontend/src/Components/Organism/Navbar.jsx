@@ -57,7 +57,7 @@ function Navbar({ style }) {
       setShowUserMenu(false);
     };
     return opts;
-  }, [isLogin, navigate, userData]);
+  }, [isLogin, navigate, userData,LogOut]);
 
   return (
     <header style={{ ...defaultStyle, ...style }}>
