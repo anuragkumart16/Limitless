@@ -12,7 +12,7 @@ import {
 import {
   resetPasswordViaEmail,
   resetPasswordViaUsername,
-} from "../../Helpers/auth.helper.js";
+} from "../../Services/auth.service.js";
 import { handleSuccess } from "../../Helpers/successfulResponse.helper.js";
 import {
   handleError,

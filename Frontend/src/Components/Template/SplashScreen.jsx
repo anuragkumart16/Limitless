@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import ScreenDiv from "../Atom/ScreenDiv.jsx";
-import healthCheck from "../../Helpers/healthCheck.helper.js";
+import healthCheck from "../../Services/healthCheck.service.js";
 import SmallText from "../Atom/SmallText.jsx";
 import Span from "../Atom/Span.jsx";
 import { handleError } from "../../Helpers/error.helper.js";
 import { useNavigate } from "react-router-dom";
-import { checkToken , getAccessToken } from "../../Helpers/auth.helper.js";
+import { checkToken , getAccessToken } from "../../Services/auth.service.js";
 import { UserAuthContext } from "../../Contexts/UserAuthContext.jsx";
 
 function SplashScreen() {

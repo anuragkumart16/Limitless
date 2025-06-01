@@ -3,7 +3,7 @@ import SmallText from "../Atom/SmallText";
 import { UserAuthContext } from "../../Contexts/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import UserPopOver from "../Molecules/UserPopOver";
-import { logoutUser } from "../../Helpers/auth.helper.js";
+import { logoutUser } from "../../Services/auth.service.js";
 
 function Navbar({ style }) {
   const popoverref = useRef(null);

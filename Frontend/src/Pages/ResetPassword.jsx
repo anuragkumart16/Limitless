@@ -1,6 +1,6 @@
 import React, { useState,useRef, useEffect } from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
-import { resetPassword } from '../Helpers/auth.helper.js'
+import { resetPassword } from '../Services/auth.service.js'
 import ScreenDiv from '../Components/Atom/ScreenDiv.jsx'
 import OutlineDiv from '../Components/Atom/OutlineDiv.jsx'
 import SecondaryHeading from '../Components/Atom/SecondaryHeading.jsx'

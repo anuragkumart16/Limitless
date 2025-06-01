@@ -1,4 +1,4 @@
-import sendEmail from "./email.helper"
+import sendEmail from "../Services/email.service"
 
 function handleError(error,navigate){
     // console.log(error)

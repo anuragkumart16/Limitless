@@ -3,8 +3,8 @@ import ScreenDiv from '../Atom/ScreenDiv'
 import OutlineDiv from '../Atom/OutlineDiv'
 import { useLocation,useNavigate } from 'react-router-dom'
 import {handleError} from '../../Helpers/error.helper.js'
-import healthCheck from '../../Helpers/healthCheck.helper.js'
-import { checkToken, getAccessToken } from '../../Helpers/auth.helper.js'
+import healthCheck from '../../Services/healthCheck.service.js'
+import { checkToken, getAccessToken } from '../../Services/auth.service.js'
 import { UserAuthContext } from '../../Contexts/UserAuthContext'
 
 function Error() {
